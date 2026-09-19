@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#102f55">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Maaşım">
+<title>Maaşım Pro</title>
+<style>
+:root{--navy:#102f55;--blue:#2e6fb5;--bg:#f3f6fa;--card:#fff;--text:#152235;--muted:#697586;--green:#07865f;--red:#c0392b;--line:#e0e6ee;--gold:#b7791f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;padding-bottom:28px}
+header{background:linear-gradient(145deg,#102f55,#2e6fb5);color:#fff;padding:calc(16px + env(safe-area-inset-top)) 16px 18px;border-radius:0 0 24px 24px;box-shadow:0 4px 18px #102f5530}
+.head{max-width:760px;margin:auto;display:flex;justify-content:space-between;align-items:center}.title{font-size:25px;font-weight:800}.sub{font-size:12px;opacity:.82;margin-top:3px}
+main{max-width:760px;margin:auto;padding:10px 13px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:5px 0 12px}.tab{padding:10px 4px;border:1px solid var(--line);border-radius:11px;background:white;color:var(--navy);font-weight:700}.tab.active{background:var(--navy);color:white}
+.page{display:none}.page.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:15px;margin:11px 0;box-shadow:0 3px 12px #102f5508}
+h2{font-size:16px;color:var(--navy);margin:0 0 12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.full{grid-column:1/-1}
+label{display:block;font-size:11px;color:var(--muted);font-weight:600;margin:0 0 5px}input,select{width:100%;padding:12px;border:1px solid #cdd6e1;border-radius:10px;background:#fff;font-size:16px;color:var(--text)}
+.hero{background:linear-gradient(145deg,#eafff6,#f9fffc);border:1px solid #b9ead8;text-align:center}.hero small{color:var(--muted);font-weight:700}.net{font-size:38px;font-weight:900;color:var(--green);margin:3px 0 12px}
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stat{background:#f7f9fc;border-radius:12px;padding:10px;text-align:left}.stat span{display:block;font-size:10px;color:var(--muted)}.stat b{font-size:14px}
+.row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #eef2f6;font-size:14px}.row:last-child{border:0}.neg{color:var(--red)}
+.badge{display:inline-block;padding:5px 9px;border-radius:99px;background:#e8eef7;color:var(--navy);font-weight:800}.warn{background:#fff4d6;color:#8a5b00}
+.progress{height:10px;background:#e6ebf1;border-radius:99px;overflow:hidden}.bar{height:100%;background:linear-gradient(90deg,#2e6fb5,#08a876);width:0}
+button{border:0;border-radius:11px;padding:11px 14px;font-weight:800;background:var(--navy);color:white}.secondary{background:#e9eef5;color:var(--navy)}.danger{background:#fff0ee;color:#b42318}
+.actions{display:flex;gap:7px;flex-wrap:wrap}.small{font-size:11px;color:var(--muted);line-height:1.5}
+.months{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.month{padding:11px;background:#f7f9fc;border:1px solid var(--line);border-radius:12px}.month b{display:block;color:var(--navy);font-size:13px}.month span{font-size:11px;color:var(--muted)}
+.toast{position:fixed;left:14px;right:14px;bottom:18px;background:#102f55;color:white;padding:13px;border-radius:12px;text-align:center;display:none;z-index:10}
+@media(max-width:430px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.months{grid-template-columns:1fr 1fr}.net{font-size:34px}}
+</style>
+</head>
+<body>
+<header><div class="head"><div><div class="title">💰 Maaşım Pro</div><div class="sub">Maaşını, mesaini ve vergi dilimini tek yerde takip et</div></div><div id="yearBadge" class="badge">2026</div></div></header>
+<main>
+<div class="tabs">
+<button class="tab active" data-page="home">Hesapla</button>
+<button class="tab" data-page="history">Geçmiş</button>
+<button class="tab" data-page="settings">Ayarlar</button>
+</div>
+
+<div id="home" class="page active">
+<section class="card">
+<h2>📅 Dönem</h2><div class="grid">
+<div><label>Yıl</label><input id="year" type="number" value="2026"></div>
+<div><label>Ay</label><select id="month"></select></div>
+</div>
+</section>
+
+<section class="card">
+<h2>💼 Maaş</h2><div class="grid">
+<div><label>Aylık brüt ücret</label><input id="gross" type="number" step=".01" value="102399.54"></div>
+<div><label>SGK prime esas kazanç</label><input id="sgkBase" type="number" step=".01" value="134054.64"></div>
+<div><label>Önceki kümülatif GV matrahı</label><input id="priorCum" type="number" step=".01" value="1286464.17"></div>
+<div><label>GV matrahından diğer indirim</label><input id="otherGV" type="number" step=".01" value="8355.72"></div>
+</div>
+</section>
+
+<section class="card">
+<h2>⏱️ Mesai</h2><div class="grid">
+<div><label>Hafta içi %200 — saat</label><input id="weekday" type="number" step=".01" value="0"></div>
+<div><label>Hafta sonu %250 — saat</label><input id="weekend" type="number" step=".01" value="0"></div>
+<div><label>Resmî tatil %300 — saat</label><input id="holiday" type="number" step=".01" value="0"></div>
+<div><label>Gece vardiyası — brüt TL</label><input id="night" type="number" step=".01" value="0"></div>
+</div><p class="small">Saatlik ücret = aylık brüt / 195. Mesai oranlarını uygulama otomatik uygular.</p>
+</section>
+
+<section class="card">
+<h2>📉 Kesintiler</h2><div class="grid">
+<div><label>BES</label><input id="bes" type="number" step=".01" value="13653.27"></div>
+<div><label>Aile sağlık sigortası</label><input id="family" type="number" step=".01" value="12454.92"></div>
+<div><label>Hayat sigortası</label><input id="life" type="number" step=".01" value="167.38"></div>
+<div><label>Sağlık sigortası</label><input id="health" type="number" step=".01" value="6239.67"></div>
+<div><label>Sendika</label><input id="union" type="number" step=".01" value="3413.32"></div>
+<div><label>Diğer özel kesintiler</label><input id="other" type="number" step=".01" value="0"></div>
+<div class="full"><label>AVANS — çekmediysen 0</label><input id="advance" type="number" step=".01" value="0"></div>
+</div></section>
+
+<section class="card hero"><small>ELİNE GEÇECEK NET</small><div class="net" id="net">0 TL</div>
+<div class="statgrid"><div class="stat"><span>Toplam brüt</span><b id="gt"></b></div><div class="stat"><span>Toplam kesinti</span><b id="ded"></b></div></div></section>
+
+<section class="card"><h2>🧾 Kesinti Özeti</h2>
+<div class="row"><span>SGK işçi %14</span><b class="neg" id="sgk"></b></div>
+<div class="row"><span>İşsizlik %1</span><b class="neg" id="unemp"></b></div>
+<div class="row"><span>Gelir vergisi</span><b class="neg" id="tax"></b></div>
+<div class="row"><span>Damga vergisi</span><b class="neg" id="stamp"></b></div>
+<div class="row"><span>Özel kesintiler</span><b class="neg" id="priv"></b></div><div class="row"><span>Avans</span><b class="neg" id="adv"></b></div>
+</section>
+
+<section class="card"><h2>📊 Vergi Dilimi</h2>
+<div class="row"><span>Kümülatif GV matrahı</span><b id="cum"></b></div>
+<div class="row"><span>Mevcut marjinal oran</span><span class="badge" id="rate"></span></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<p class="small" id="barText"></p>
+<div class="row"><span>Bu ay GV matrahı</span><b id="mgv"></b></div>
+<div class="row"><span>Sonraki dilime kalan</span><b id="next"></b></div>
+</section>
+
+<section class="card"><div class="actions"><button onclick="save()">💾 Ayı Kaydet</button><button class="secondary" onclick="clearInputs()">Temizle</button></div><p class="small">Kaydettiğinde ayın net maaşı ve girişlerin telefonunda saklanır.</p></section>
+</div>
+
+<div id="history" class="page">
+<section class="card"><h2>📚 Maaş Geçmişi</h2><div id="historyList" class="months"></div><p class="small">Kayıtlı ayları burada görebilirsin. Kayıtlar sadece bu cihazın tarayıcısında tutulur.</p></section>
+</div>
+
+<div id="settings" class="page">
+<section class="card"><h2>⚙️ Ayarlar</h2>
+<div class="grid"><div><label>SGK üst sınırı</label><input id="sgkCap" type="number" value="297270"></div><div><label>Damga vergisi oranı</label><input id="stampRate" type="number" step=".00001" value=".00759"></div></div>
+<p class="small">Bu alanları yalnızca bordro uygulaman farklı değerler kullanıyorsa değiştir.</p>
+</section>
+<section class="card"><h2>📌 Sabit Mesai Oranları</h2>
+<div class="row"><span>Hafta içi</span><b>%200</b></div><div class="row"><span>Hafta sonu</span><b>%250</b></div><div class="row"><span>Resmî tatil</span><b>%300</b></div>
+</section>
+<section class="card"><button class="danger" onclick="wipe()">Tüm kayıtları sil</button></section>
+</div>
+<p class="small">2026 ücret gelir vergisi tarifesi: %15 / %20 / %27 / %35 / %40. Uygulama bordro tahmini içindir; işverenin gerçek bordro hesaplaması özel istisna ve matrah uygulamalarına göre farklılaşabilir.</p>
+
+<section class="card" style="margin-top:14px">
+<h2>📱 iPhone'a Uygulama Olarak Ekle</h2>
+<p class="small">Bu sayfayı Safari'de açtıktan sonra <b>Paylaş → Ana Ekrana Ekle</b> seçeneğini kullan. Böylece Maaşım Pro ana ekranda uygulama ikonu gibi görünür.</p>
+</section>
+</main><div id="toast" class="toast"></div>
+
+<script>
+const months=["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
+const ids=["year","month","gross","sgkBase","priorCum","otherGV","weekday","weekend","holiday","night","bes","family","life","health","union","other","advance"];
+const $=id=>document.getElementById(id),N=id=>Number($(id).value)||0,fmt=x=>new Intl.NumberFormat("tr-TR",{minimumFractionDigits:2,maximumFractionDigits:2}).format(x)+" TL";
+months.forEach((m,i)=>{let o=document.createElement("option");o.value=i+1;o.textContent=m;$("month").appendChild(o)});$("month").value=9;
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.page).classList.add("active");if(b.dataset.page==="history")renderHistory()});
+function at(y){if(y<=190000)return y*.15;if(y<=400000)return 28500+(y-190000)*.20;if(y<=1500000)return 70500+(y-400000)*.27;if(y<=5300000)return 367500+(y-1500000)*.35;return 1697500+(y-5300000)*.40}
+function rate(y){return y<=190000?.15:y<=400000?.20:y<=1500000?.27:y<=5300000?.35:.40}
+function limit(y){return y<190000?190000:y<400000?400000:y<1500000?1500000:y<5300000?5300000:null}
+function calc(){
+ const g=N("gross"),hour=g/195,ot=hour*(N("weekday")*2+N("weekend")*2.5+N("holiday")*3),total=g+ot+N("night");
+ const cap=Math.min(Number($("sgkCap").value)||297270,999999999),base=Math.min(Math.min(N("sgkBase")+ot,cap),total);
+ const sgk=base*.14,unemp=base*.01,mgv=Math.max(0,base-sgk-unemp-N("otherGV")),prior=N("priorCum"),cum=prior+mgv,r=rate(cum);
+ const minBase=33030*.85,minGV=minBase*r,raw=Math.max(0,at(cum)-at(prior)),tax=Math.max(0,raw-minGV);
+ const sr=Number($("stampRate").value)||.00759,minStamp=33030*sr,stamp=Math.max(0,total*sr-minStamp);
+ const priv=N("bes")+N("family")+N("life")+N("health")+N("union")+N("other"),adv=N("advance"),ded=sgk+unemp+tax+stamp+priv+adv,net=total-ded;
+ $("net").textContent=fmt(net);$("gt").textContent=fmt(total);$("ded").textContent=fmt(ded);$("sgk").textContent="- "+fmt(sgk);$("unemp").textContent="- "+fmt(unemp);$("tax").textContent="- "+fmt(tax);$("stamp").textContent="- "+fmt(stamp);$("priv").textContent="- "+fmt(priv);$("adv").textContent="- "+fmt(adv);
+ $("cum").textContent=fmt(cum);$("rate").textContent=Math.round(r*100)+"%";$("mgv").textContent=fmt(mgv);
+ const lim=limit(cum);$("next").textContent=lim?fmt(Math.max(0,lim-cum)):"Üst dilim";
+ let pct=lim?Math.min(100,(cum/(lim))*100):100;$("bar").style.width=pct+"%";$("barText").textContent=lim?`%${Math.round(pct)} doldu — sonraki eşik ${fmt(lim)}.`:"En üst dilim.";
+ return {year:N("year"),month:N("month"),monthName:months[N("month")-1],net,total,mgv,cum,rate:r,values:Object.fromEntries(ids.map(x=>[x,$(x).value]))};
+}
+function toast(t){$("toast").textContent=t;$("toast").style.display="block";setTimeout(()=>$("toast").style.display="none",2200)}
+function save(){let d=calc();localStorage.setItem("maas_"+d.year+"_"+String(d.month).padStart(2,"0"),JSON.stringify(d));toast(d.monthName+" "+d.year+" kaydedildi");}
+function renderHistory(){let el=$("historyList");let a=[];for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i);if(k.startsWith("maas_")){try{a.push(JSON.parse(localStorage.getItem(k)))}catch(e){}}}a.sort((x,y)=>y.year-y.year||y.month-x.month);el.innerHTML=a.length?a.map(d=>`<div class="month"><b>${d.monthName} ${d.year}</b><span>Net: ${fmt(d.net)}</span><br><span>Vergi: %${Math.round(d.rate*100)}</span></div>`).join(""):"<div class='small'>Henüz kayıt yok.</div>"}
+function clearInputs(){ids.forEach(id=>{if(id==="year")$(id).value=2026;else if(id==="month")$(id).value=9;else $(id).value=0});calc();toast("Girişler temizlendi")}
+function wipe(){if(confirm("Tüm kayıtlar silinsin mi?")){Object.keys(localStorage).filter(k=>k.startsWith("maas_")).forEach(k=>localStorage.removeItem(k));renderHistory();toast("Kayıtlar silindi")}}
+document.querySelectorAll("input,select").forEach(e=>e.addEventListener("input",calc));calc();
+</script></body></html>
